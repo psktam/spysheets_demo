@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+package operations;
+
+
+message CellArray {
+    optional int64 rows = 1;
+    optional int64 cols = 2;
+    repeated string values = 3;
+}
+    
+message ActionSpecification {
+
+    message Argument {
+        optional string name = 1;
+        optional CellArray value_array = 2;
+    }
+
+    repeated Argument input_data = 1;
+    optional string script_contents = 2;  // Where we stick the python code.
+}
