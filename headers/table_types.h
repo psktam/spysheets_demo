@@ -4,6 +4,7 @@
 #include <string>
 #include <tuple>
 #include <unordered_map>
+#include "cell_value.h"
 
 typedef std::string op_id_t;
 typedef unsigned long long int ord;
@@ -29,7 +30,7 @@ struct coord_hasher{  // Wonder why we have to put this in a struct first.
     }
 };
 
-typedef std::unordered_map<coord, std::string*, coord_hasher> cellmap;
+typedef std::unordered_map<coord, CellValue*, coord_hasher> cellmap;
 
 
 #endif  // TABLE_TYPES_H

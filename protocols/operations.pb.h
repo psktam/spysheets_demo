@@ -29,6 +29,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
@@ -54,15 +55,285 @@ extern ActionSpecification_ArgumentDefaultTypeInternal _ActionSpecification_Argu
 class CellArray;
 struct CellArrayDefaultTypeInternal;
 extern CellArrayDefaultTypeInternal _CellArray_default_instance_;
+class CellValue;
+struct CellValueDefaultTypeInternal;
+extern CellValueDefaultTypeInternal _CellValue_default_instance_;
 }  // namespace operations
 PROTOBUF_NAMESPACE_OPEN
 template<> ::operations::ActionSpecification* Arena::CreateMaybeMessage<::operations::ActionSpecification>(Arena*);
 template<> ::operations::ActionSpecification_Argument* Arena::CreateMaybeMessage<::operations::ActionSpecification_Argument>(Arena*);
 template<> ::operations::CellArray* Arena::CreateMaybeMessage<::operations::CellArray>(Arena*);
+template<> ::operations::CellValue* Arena::CreateMaybeMessage<::operations::CellValue>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace operations {
 
+enum CellValue_CellType : int {
+  CellValue_CellType_Integer = 1,
+  CellValue_CellType_Real = 2,
+  CellValue_CellType_String = 3
+};
+bool CellValue_CellType_IsValid(int value);
+constexpr CellValue_CellType CellValue_CellType_CellType_MIN = CellValue_CellType_Integer;
+constexpr CellValue_CellType CellValue_CellType_CellType_MAX = CellValue_CellType_String;
+constexpr int CellValue_CellType_CellType_ARRAYSIZE = CellValue_CellType_CellType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CellValue_CellType_descriptor();
+template<typename T>
+inline const std::string& CellValue_CellType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, CellValue_CellType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function CellValue_CellType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    CellValue_CellType_descriptor(), enum_t_value);
+}
+inline bool CellValue_CellType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, CellValue_CellType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CellValue_CellType>(
+    CellValue_CellType_descriptor(), name, value);
+}
 // ===================================================================
+
+class CellValue final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:operations.CellValue) */ {
+ public:
+  inline CellValue() : CellValue(nullptr) {}
+  ~CellValue() override;
+  explicit PROTOBUF_CONSTEXPR CellValue(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CellValue(const CellValue& from);
+  CellValue(CellValue&& from) noexcept
+    : CellValue() {
+    *this = ::std::move(from);
+  }
+
+  inline CellValue& operator=(const CellValue& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CellValue& operator=(CellValue&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CellValue& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CellValue* internal_default_instance() {
+    return reinterpret_cast<const CellValue*>(
+               &_CellValue_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(CellValue& a, CellValue& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CellValue* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CellValue* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CellValue* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CellValue>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CellValue& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CellValue& from) {
+    CellValue::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CellValue* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "operations.CellValue";
+  }
+  protected:
+  explicit CellValue(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  typedef CellValue_CellType CellType;
+  static constexpr CellType Integer =
+    CellValue_CellType_Integer;
+  static constexpr CellType Real =
+    CellValue_CellType_Real;
+  static constexpr CellType String =
+    CellValue_CellType_String;
+  static inline bool CellType_IsValid(int value) {
+    return CellValue_CellType_IsValid(value);
+  }
+  static constexpr CellType CellType_MIN =
+    CellValue_CellType_CellType_MIN;
+  static constexpr CellType CellType_MAX =
+    CellValue_CellType_CellType_MAX;
+  static constexpr int CellType_ARRAYSIZE =
+    CellValue_CellType_CellType_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  CellType_descriptor() {
+    return CellValue_CellType_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& CellType_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, CellType>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function CellType_Name.");
+    return CellValue_CellType_Name(enum_t_value);
+  }
+  static inline bool CellType_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      CellType* value) {
+    return CellValue_CellType_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kStringValFieldNumber = 4,
+    kIntValFieldNumber = 2,
+    kRealValFieldNumber = 3,
+    kTypeFieldNumber = 1,
+  };
+  // optional string string_val = 4;
+  bool has_string_val() const;
+  private:
+  bool _internal_has_string_val() const;
+  public:
+  void clear_string_val();
+  const std::string& string_val() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_string_val(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_string_val();
+  PROTOBUF_NODISCARD std::string* release_string_val();
+  void set_allocated_string_val(std::string* string_val);
+  private:
+  const std::string& _internal_string_val() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_string_val(const std::string& value);
+  std::string* _internal_mutable_string_val();
+  public:
+
+  // optional int64 int_val = 2;
+  bool has_int_val() const;
+  private:
+  bool _internal_has_int_val() const;
+  public:
+  void clear_int_val();
+  int64_t int_val() const;
+  void set_int_val(int64_t value);
+  private:
+  int64_t _internal_int_val() const;
+  void _internal_set_int_val(int64_t value);
+  public:
+
+  // optional double real_val = 3;
+  bool has_real_val() const;
+  private:
+  bool _internal_has_real_val() const;
+  public:
+  void clear_real_val();
+  double real_val() const;
+  void set_real_val(double value);
+  private:
+  double _internal_real_val() const;
+  void _internal_set_real_val(double value);
+  public:
+
+  // optional .operations.CellValue.CellType type = 1;
+  bool has_type() const;
+  private:
+  bool _internal_has_type() const;
+  public:
+  void clear_type();
+  ::operations::CellValue_CellType type() const;
+  void set_type(::operations::CellValue_CellType value);
+  private:
+  ::operations::CellValue_CellType _internal_type() const;
+  void _internal_set_type(::operations::CellValue_CellType value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:operations.CellValue)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr string_val_;
+    int64_t int_val_;
+    double real_val_;
+    int type_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_protocols_2foperations_2eproto;
+};
+// -------------------------------------------------------------------
 
 class CellArray final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:operations.CellArray) */ {
@@ -119,7 +390,7 @@ class CellArray final :
                &_CellArray_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   friend void swap(CellArray& a, CellArray& b) {
     a.Swap(&b);
@@ -196,29 +467,23 @@ class CellArray final :
     kRowsFieldNumber = 1,
     kColsFieldNumber = 2,
   };
-  // repeated string values = 3;
+  // repeated .operations.CellValue values = 3;
   int values_size() const;
   private:
   int _internal_values_size() const;
   public:
   void clear_values();
-  const std::string& values(int index) const;
-  std::string* mutable_values(int index);
-  void set_values(int index, const std::string& value);
-  void set_values(int index, std::string&& value);
-  void set_values(int index, const char* value);
-  void set_values(int index, const char* value, size_t size);
-  std::string* add_values();
-  void add_values(const std::string& value);
-  void add_values(std::string&& value);
-  void add_values(const char* value);
-  void add_values(const char* value, size_t size);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& values() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_values();
+  ::operations::CellValue* mutable_values(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::operations::CellValue >*
+      mutable_values();
   private:
-  const std::string& _internal_values(int index) const;
-  std::string* _internal_add_values();
+  const ::operations::CellValue& _internal_values(int index) const;
+  ::operations::CellValue* _internal_add_values();
   public:
+  const ::operations::CellValue& values(int index) const;
+  ::operations::CellValue* add_values();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::operations::CellValue >&
+      values() const;
 
   // optional int64 rows = 1;
   bool has_rows() const;
@@ -256,7 +521,7 @@ class CellArray final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> values_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::operations::CellValue > values_;
     int64_t rows_;
     int64_t cols_;
   };
@@ -320,7 +585,7 @@ class ActionSpecification_Argument final :
                &_ActionSpecification_Argument_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(ActionSpecification_Argument& a, ActionSpecification_Argument& b) {
     a.Swap(&b);
@@ -505,7 +770,7 @@ class ActionSpecification final :
                &_ActionSpecification_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(ActionSpecification& a, ActionSpecification& b) {
     a.Swap(&b);
@@ -644,6 +909,163 @@ class ActionSpecification final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// CellValue
+
+// optional .operations.CellValue.CellType type = 1;
+inline bool CellValue::_internal_has_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool CellValue::has_type() const {
+  return _internal_has_type();
+}
+inline void CellValue::clear_type() {
+  _impl_.type_ = 1;
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline ::operations::CellValue_CellType CellValue::_internal_type() const {
+  return static_cast< ::operations::CellValue_CellType >(_impl_.type_);
+}
+inline ::operations::CellValue_CellType CellValue::type() const {
+  // @@protoc_insertion_point(field_get:operations.CellValue.type)
+  return _internal_type();
+}
+inline void CellValue::_internal_set_type(::operations::CellValue_CellType value) {
+  assert(::operations::CellValue_CellType_IsValid(value));
+  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_.type_ = value;
+}
+inline void CellValue::set_type(::operations::CellValue_CellType value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:operations.CellValue.type)
+}
+
+// optional int64 int_val = 2;
+inline bool CellValue::_internal_has_int_val() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool CellValue::has_int_val() const {
+  return _internal_has_int_val();
+}
+inline void CellValue::clear_int_val() {
+  _impl_.int_val_ = int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline int64_t CellValue::_internal_int_val() const {
+  return _impl_.int_val_;
+}
+inline int64_t CellValue::int_val() const {
+  // @@protoc_insertion_point(field_get:operations.CellValue.int_val)
+  return _internal_int_val();
+}
+inline void CellValue::_internal_set_int_val(int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.int_val_ = value;
+}
+inline void CellValue::set_int_val(int64_t value) {
+  _internal_set_int_val(value);
+  // @@protoc_insertion_point(field_set:operations.CellValue.int_val)
+}
+
+// optional double real_val = 3;
+inline bool CellValue::_internal_has_real_val() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool CellValue::has_real_val() const {
+  return _internal_has_real_val();
+}
+inline void CellValue::clear_real_val() {
+  _impl_.real_val_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline double CellValue::_internal_real_val() const {
+  return _impl_.real_val_;
+}
+inline double CellValue::real_val() const {
+  // @@protoc_insertion_point(field_get:operations.CellValue.real_val)
+  return _internal_real_val();
+}
+inline void CellValue::_internal_set_real_val(double value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.real_val_ = value;
+}
+inline void CellValue::set_real_val(double value) {
+  _internal_set_real_val(value);
+  // @@protoc_insertion_point(field_set:operations.CellValue.real_val)
+}
+
+// optional string string_val = 4;
+inline bool CellValue::_internal_has_string_val() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool CellValue::has_string_val() const {
+  return _internal_has_string_val();
+}
+inline void CellValue::clear_string_val() {
+  _impl_.string_val_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& CellValue::string_val() const {
+  // @@protoc_insertion_point(field_get:operations.CellValue.string_val)
+  return _internal_string_val();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CellValue::set_string_val(ArgT0&& arg0, ArgT... args) {
+ _impl_._has_bits_[0] |= 0x00000001u;
+ _impl_.string_val_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:operations.CellValue.string_val)
+}
+inline std::string* CellValue::mutable_string_val() {
+  std::string* _s = _internal_mutable_string_val();
+  // @@protoc_insertion_point(field_mutable:operations.CellValue.string_val)
+  return _s;
+}
+inline const std::string& CellValue::_internal_string_val() const {
+  return _impl_.string_val_.Get();
+}
+inline void CellValue::_internal_set_string_val(const std::string& value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.string_val_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CellValue::_internal_mutable_string_val() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.string_val_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CellValue::release_string_val() {
+  // @@protoc_insertion_point(field_release:operations.CellValue.string_val)
+  if (!_internal_has_string_val()) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* p = _impl_.string_val_.Release();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.string_val_.IsDefault()) {
+    _impl_.string_val_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return p;
+}
+inline void CellValue::set_allocated_string_val(std::string* string_val) {
+  if (string_val != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.string_val_.SetAllocated(string_val, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.string_val_.IsDefault()) {
+    _impl_.string_val_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:operations.CellValue.string_val)
+}
+
+// -------------------------------------------------------------------
+
 // CellArray
 
 // optional int64 rows = 1;
@@ -702,7 +1124,7 @@ inline void CellArray::set_cols(int64_t value) {
   // @@protoc_insertion_point(field_set:operations.CellArray.cols)
 }
 
-// repeated string values = 3;
+// repeated .operations.CellValue values = 3;
 inline int CellArray::_internal_values_size() const {
   return _impl_.values_.size();
 }
@@ -712,69 +1134,34 @@ inline int CellArray::values_size() const {
 inline void CellArray::clear_values() {
   _impl_.values_.Clear();
 }
-inline std::string* CellArray::add_values() {
-  std::string* _s = _internal_add_values();
-  // @@protoc_insertion_point(field_add_mutable:operations.CellArray.values)
-  return _s;
-}
-inline const std::string& CellArray::_internal_values(int index) const {
-  return _impl_.values_.Get(index);
-}
-inline const std::string& CellArray::values(int index) const {
-  // @@protoc_insertion_point(field_get:operations.CellArray.values)
-  return _internal_values(index);
-}
-inline std::string* CellArray::mutable_values(int index) {
+inline ::operations::CellValue* CellArray::mutable_values(int index) {
   // @@protoc_insertion_point(field_mutable:operations.CellArray.values)
   return _impl_.values_.Mutable(index);
 }
-inline void CellArray::set_values(int index, const std::string& value) {
-  _impl_.values_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set:operations.CellArray.values)
-}
-inline void CellArray::set_values(int index, std::string&& value) {
-  _impl_.values_.Mutable(index)->assign(std::move(value));
-  // @@protoc_insertion_point(field_set:operations.CellArray.values)
-}
-inline void CellArray::set_values(int index, const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  _impl_.values_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:operations.CellArray.values)
-}
-inline void CellArray::set_values(int index, const char* value, size_t size) {
-  _impl_.values_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:operations.CellArray.values)
-}
-inline std::string* CellArray::_internal_add_values() {
-  return _impl_.values_.Add();
-}
-inline void CellArray::add_values(const std::string& value) {
-  _impl_.values_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:operations.CellArray.values)
-}
-inline void CellArray::add_values(std::string&& value) {
-  _impl_.values_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:operations.CellArray.values)
-}
-inline void CellArray::add_values(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  _impl_.values_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:operations.CellArray.values)
-}
-inline void CellArray::add_values(const char* value, size_t size) {
-  _impl_.values_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:operations.CellArray.values)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
-CellArray::values() const {
-  // @@protoc_insertion_point(field_list:operations.CellArray.values)
-  return _impl_.values_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::operations::CellValue >*
 CellArray::mutable_values() {
   // @@protoc_insertion_point(field_mutable_list:operations.CellArray.values)
   return &_impl_.values_;
+}
+inline const ::operations::CellValue& CellArray::_internal_values(int index) const {
+  return _impl_.values_.Get(index);
+}
+inline const ::operations::CellValue& CellArray::values(int index) const {
+  // @@protoc_insertion_point(field_get:operations.CellArray.values)
+  return _internal_values(index);
+}
+inline ::operations::CellValue* CellArray::_internal_add_values() {
+  return _impl_.values_.Add();
+}
+inline ::operations::CellValue* CellArray::add_values() {
+  ::operations::CellValue* _add = _internal_add_values();
+  // @@protoc_insertion_point(field_add:operations.CellArray.values)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::operations::CellValue >&
+CellArray::values() const {
+  // @@protoc_insertion_point(field_list:operations.CellArray.values)
+  return _impl_.values_;
 }
 
 // -------------------------------------------------------------------
@@ -1058,10 +1445,22 @@ inline void ActionSpecification::set_allocated_script_contents(std::string* scri
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace operations
+
+PROTOBUF_NAMESPACE_OPEN
+
+template <> struct is_proto_enum< ::operations::CellValue_CellType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::operations::CellValue_CellType>() {
+  return ::operations::CellValue_CellType_descriptor();
+}
+
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 

@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include "actions.h"
+#include "cell_value.h"
 #include "table_types.h"
 
 
@@ -34,13 +35,13 @@ class Table {
 
         std::string get_op_id();
 
-        std::string* get(ord, ord);
-        std::string* get(coord);
+        CellValue* get(ord, ord);
+        CellValue* get(coord);
 
         region get_region(op_id_t);
 
-        void insert(coord, std::string*);
-        void insert(ord, ord, std::string*);
+        void insert(coord, CellValue*);
+        void insert(ord, ord, CellValue*);
 
         /** 
          * Print the contents of the table, going from left to right and then

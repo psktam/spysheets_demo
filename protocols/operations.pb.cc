@@ -21,6 +21,23 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 namespace operations {
+PROTOBUF_CONSTEXPR CellValue::CellValue(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.string_val_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.int_val_)*/int64_t{0}
+  , /*decltype(_impl_.real_val_)*/0
+  , /*decltype(_impl_.type_)*/1} {}
+struct CellValueDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CellValueDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CellValueDefaultTypeInternal() {}
+  union {
+    CellValue _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CellValueDefaultTypeInternal _CellValue_default_instance_;
 PROTOBUF_CONSTEXPR CellArray::CellArray(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_._has_bits_)*/{}
@@ -68,11 +85,25 @@ struct ActionSpecificationDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ActionSpecificationDefaultTypeInternal _ActionSpecification_default_instance_;
 }  // namespace operations
-static ::_pb::Metadata file_level_metadata_protocols_2foperations_2eproto[3];
-static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_protocols_2foperations_2eproto = nullptr;
+static ::_pb::Metadata file_level_metadata_protocols_2foperations_2eproto[4];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_protocols_2foperations_2eproto[1];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_protocols_2foperations_2eproto = nullptr;
 
 const uint32_t TableStruct_protocols_2foperations_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  PROTOBUF_FIELD_OFFSET(::operations::CellValue, _impl_._has_bits_),
+  PROTOBUF_FIELD_OFFSET(::operations::CellValue, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::operations::CellValue, _impl_.type_),
+  PROTOBUF_FIELD_OFFSET(::operations::CellValue, _impl_.int_val_),
+  PROTOBUF_FIELD_OFFSET(::operations::CellValue, _impl_.real_val_),
+  PROTOBUF_FIELD_OFFSET(::operations::CellValue, _impl_.string_val_),
+  3,
+  1,
+  2,
+  0,
   PROTOBUF_FIELD_OFFSET(::operations::CellArray, _impl_._has_bits_),
   PROTOBUF_FIELD_OFFSET(::operations::CellArray, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -107,12 +138,14 @@ const uint32_t TableStruct_protocols_2foperations_2eproto::offsets[] PROTOBUF_SE
   0,
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 9, -1, sizeof(::operations::CellArray)},
-  { 12, 20, -1, sizeof(::operations::ActionSpecification_Argument)},
-  { 22, 30, -1, sizeof(::operations::ActionSpecification)},
+  { 0, 10, -1, sizeof(::operations::CellValue)},
+  { 14, 23, -1, sizeof(::operations::CellArray)},
+  { 26, 34, -1, sizeof(::operations::ActionSpecification_Argument)},
+  { 36, 44, -1, sizeof(::operations::ActionSpecification)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
+  &::operations::_CellValue_default_instance_._instance,
   &::operations::_CellArray_default_instance_._instance,
   &::operations::_ActionSpecification_Argument_default_instance_._instance,
   &::operations::_ActionSpecification_default_instance_._instance,
@@ -120,18 +153,23 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_protocols_2foperations_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\032protocols/operations.proto\022\noperations"
-  "\"7\n\tCellArray\022\014\n\004rows\030\001 \001(\003\022\014\n\004cols\030\002 \001("
-  "\003\022\016\n\006values\030\003 \003(\t\"\262\001\n\023ActionSpecificatio"
-  "n\022<\n\ninput_data\030\001 \003(\0132(.operations.Actio"
-  "nSpecification.Argument\022\027\n\017script_conten"
-  "ts\030\002 \001(\t\032D\n\010Argument\022\014\n\004name\030\001 \001(\t\022*\n\013va"
-  "lue_array\030\002 \001(\0132\025.operations.CellArray"
+  "\"\237\001\n\tCellValue\022,\n\004type\030\001 \001(\0162\036.operation"
+  "s.CellValue.CellType\022\017\n\007int_val\030\002 \001(\003\022\020\n"
+  "\010real_val\030\003 \001(\001\022\022\n\nstring_val\030\004 \001(\t\"-\n\010C"
+  "ellType\022\013\n\007Integer\020\001\022\010\n\004Real\020\002\022\n\n\006String"
+  "\020\003\"N\n\tCellArray\022\014\n\004rows\030\001 \001(\003\022\014\n\004cols\030\002 "
+  "\001(\003\022%\n\006values\030\003 \003(\0132\025.operations.CellVal"
+  "ue\"\262\001\n\023ActionSpecification\022<\n\ninput_data"
+  "\030\001 \003(\0132(.operations.ActionSpecification."
+  "Argument\022\027\n\017script_contents\030\002 \001(\t\032D\n\010Arg"
+  "ument\022\014\n\004name\030\001 \001(\t\022*\n\013value_array\030\002 \001(\013"
+  "2\025.operations.CellArray"
   ;
 static ::_pbi::once_flag descriptor_table_protocols_2foperations_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_protocols_2foperations_2eproto = {
-    false, false, 278, descriptor_table_protodef_protocols_2foperations_2eproto,
+    false, false, 463, descriptor_table_protodef_protocols_2foperations_2eproto,
     "protocols/operations.proto",
-    &descriptor_table_protocols_2foperations_2eproto_once, nullptr, 0, 3,
+    &descriptor_table_protocols_2foperations_2eproto_once, nullptr, 0, 4,
     schemas, file_default_instances, TableStruct_protocols_2foperations_2eproto::offsets,
     file_level_metadata_protocols_2foperations_2eproto, file_level_enum_descriptors_protocols_2foperations_2eproto,
     file_level_service_descriptors_protocols_2foperations_2eproto,
@@ -143,6 +181,361 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_protocol
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_protocols_2foperations_2eproto(&descriptor_table_protocols_2foperations_2eproto);
 namespace operations {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CellValue_CellType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_protocols_2foperations_2eproto);
+  return file_level_enum_descriptors_protocols_2foperations_2eproto[0];
+}
+bool CellValue_CellType_IsValid(int value) {
+  switch (value) {
+    case 1:
+    case 2:
+    case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+constexpr CellValue_CellType CellValue::Integer;
+constexpr CellValue_CellType CellValue::Real;
+constexpr CellValue_CellType CellValue::String;
+constexpr CellValue_CellType CellValue::CellType_MIN;
+constexpr CellValue_CellType CellValue::CellType_MAX;
+constexpr int CellValue::CellType_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+// ===================================================================
+
+class CellValue::_Internal {
+ public:
+  using HasBits = decltype(std::declval<CellValue>()._impl_._has_bits_);
+  static void set_has_type(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+  static void set_has_int_val(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_real_val(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+  static void set_has_string_val(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+CellValue::CellValue(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:operations.CellValue)
+}
+CellValue::CellValue(const CellValue& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CellValue* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.string_val_){}
+    , decltype(_impl_.int_val_){}
+    , decltype(_impl_.real_val_){}
+    , decltype(_impl_.type_){}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.string_val_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.string_val_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (from._internal_has_string_val()) {
+    _this->_impl_.string_val_.Set(from._internal_string_val(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.int_val_, &from._impl_.int_val_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.type_) -
+    reinterpret_cast<char*>(&_impl_.int_val_)) + sizeof(_impl_.type_));
+  // @@protoc_insertion_point(copy_constructor:operations.CellValue)
+}
+
+inline void CellValue::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.string_val_){}
+    , decltype(_impl_.int_val_){int64_t{0}}
+    , decltype(_impl_.real_val_){0}
+    , decltype(_impl_.type_){1}
+  };
+  _impl_.string_val_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.string_val_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CellValue::~CellValue() {
+  // @@protoc_insertion_point(destructor:operations.CellValue)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CellValue::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.string_val_.Destroy();
+}
+
+void CellValue::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CellValue::Clear() {
+// @@protoc_insertion_point(message_clear_start:operations.CellValue)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    _impl_.string_val_.ClearNonDefaultToEmpty();
+  }
+  if (cached_has_bits & 0x0000000eu) {
+    ::memset(&_impl_.int_val_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&_impl_.real_val_) -
+        reinterpret_cast<char*>(&_impl_.int_val_)) + sizeof(_impl_.real_val_));
+    _impl_.type_ = 1;
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CellValue::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // optional .operations.CellValue.CellType type = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          if (PROTOBUF_PREDICT_TRUE(::operations::CellValue_CellType_IsValid(val))) {
+            _internal_set_type(static_cast<::operations::CellValue_CellType>(val));
+          } else {
+            ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(1, val, mutable_unknown_fields());
+          }
+        } else
+          goto handle_unusual;
+        continue;
+      // optional int64 int_val = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _Internal::set_has_int_val(&has_bits);
+          _impl_.int_val_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional double real_val = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 25)) {
+          _Internal::set_has_real_val(&has_bits);
+          _impl_.real_val_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional string string_val = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          auto str = _internal_mutable_string_val();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          #ifndef NDEBUG
+          ::_pbi::VerifyUTF8(str, "operations.CellValue.string_val");
+          #endif  // !NDEBUG
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  _impl_._has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CellValue::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:operations.CellValue)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // optional .operations.CellValue.CellType type = 1;
+  if (cached_has_bits & 0x00000008u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_type(), target);
+  }
+
+  // optional int64 int_val = 2;
+  if (cached_has_bits & 0x00000002u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(2, this->_internal_int_val(), target);
+  }
+
+  // optional double real_val = 3;
+  if (cached_has_bits & 0x00000004u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(3, this->_internal_real_val(), target);
+  }
+
+  // optional string string_val = 4;
+  if (cached_has_bits & 0x00000001u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_string_val().data(), static_cast<int>(this->_internal_string_val().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "operations.CellValue.string_val");
+    target = stream->WriteStringMaybeAliased(
+        4, this->_internal_string_val(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:operations.CellValue)
+  return target;
+}
+
+size_t CellValue::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:operations.CellValue)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000000fu) {
+    // optional string string_val = 4;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_string_val());
+    }
+
+    // optional int64 int_val = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_int_val());
+    }
+
+    // optional double real_val = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 + 8;
+    }
+
+    // optional .operations.CellValue.CellType type = 1;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += 1 +
+        ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
+    }
+
+  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CellValue::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CellValue::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CellValue::GetClassData() const { return &_class_data_; }
+
+
+void CellValue::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CellValue*>(&to_msg);
+  auto& from = static_cast<const CellValue&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:operations.CellValue)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000000fu) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_set_string_val(from._internal_string_val());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_impl_.int_val_ = from._impl_.int_val_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_impl_.real_val_ = from._impl_.real_val_;
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _this->_impl_.type_ = from._impl_.type_;
+    }
+    _this->_impl_._has_bits_[0] |= cached_has_bits;
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CellValue::CopyFrom(const CellValue& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:operations.CellValue)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CellValue::IsInitialized() const {
+  return true;
+}
+
+void CellValue::InternalSwap(CellValue* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.string_val_, lhs_arena,
+      &other->_impl_.string_val_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CellValue, _impl_.real_val_)
+      + sizeof(CellValue::_impl_.real_val_)
+      - PROTOBUF_FIELD_OFFSET(CellValue, _impl_.int_val_)>(
+          reinterpret_cast<char*>(&_impl_.int_val_),
+          reinterpret_cast<char*>(&other->_impl_.int_val_));
+  swap(_impl_.type_, other->_impl_.type_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CellValue::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_protocols_2foperations_2eproto_getter, &descriptor_table_protocols_2foperations_2eproto_once,
+      file_level_metadata_protocols_2foperations_2eproto[0]);
+}
 
 // ===================================================================
 
@@ -253,18 +646,14 @@ const char* CellArray::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
         } else
           goto handle_unusual;
         continue;
-      // repeated string values = 3;
+      // repeated .operations.CellValue values = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
-            auto str = _internal_add_values();
-            ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+            ptr = ctx->ParseMessage(_internal_add_values(), ptr);
             CHK_(ptr);
-            #ifndef NDEBUG
-            ::_pbi::VerifyUTF8(str, "operations.CellArray.values");
-            #endif  // !NDEBUG
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
         } else
@@ -313,14 +702,12 @@ uint8_t* CellArray::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt64ToArray(2, this->_internal_cols(), target);
   }
 
-  // repeated string values = 3;
-  for (int i = 0, n = this->_internal_values_size(); i < n; i++) {
-    const auto& s = this->_internal_values(i);
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
-      s.data(), static_cast<int>(s.length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
-      "operations.CellArray.values");
-    target = stream->WriteString(3, s, target);
+  // repeated .operations.CellValue values = 3;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_values_size()); i < n; i++) {
+    const auto& repfield = this->_internal_values(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(3, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -339,12 +726,11 @@ size_t CellArray::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated string values = 3;
-  total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.values_.size());
-  for (int i = 0, n = _impl_.values_.size(); i < n; i++) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-      _impl_.values_.Get(i));
+  // repeated .operations.CellValue values = 3;
+  total_size += 1UL * this->_internal_values_size();
+  for (const auto& msg : this->_impl_.values_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   cached_has_bits = _impl_._has_bits_[0];
@@ -419,7 +805,7 @@ void CellArray::InternalSwap(CellArray* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CellArray::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_protocols_2foperations_2eproto_getter, &descriptor_table_protocols_2foperations_2eproto_once,
-      file_level_metadata_protocols_2foperations_2eproto[0]);
+      file_level_metadata_protocols_2foperations_2eproto[1]);
 }
 
 // ===================================================================
@@ -691,7 +1077,7 @@ void ActionSpecification_Argument::InternalSwap(ActionSpecification_Argument* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata ActionSpecification_Argument::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_protocols_2foperations_2eproto_getter, &descriptor_table_protocols_2foperations_2eproto_once,
-      file_level_metadata_protocols_2foperations_2eproto[1]);
+      file_level_metadata_protocols_2foperations_2eproto[2]);
 }
 
 // ===================================================================
@@ -945,12 +1331,16 @@ void ActionSpecification::InternalSwap(ActionSpecification* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ActionSpecification::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_protocols_2foperations_2eproto_getter, &descriptor_table_protocols_2foperations_2eproto_once,
-      file_level_metadata_protocols_2foperations_2eproto[2]);
+      file_level_metadata_protocols_2foperations_2eproto[3]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace operations
 PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::operations::CellValue*
+Arena::CreateMaybeMessage< ::operations::CellValue >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::operations::CellValue >(arena);
+}
 template<> PROTOBUF_NOINLINE ::operations::CellArray*
 Arena::CreateMaybeMessage< ::operations::CellArray >(Arena* arena) {
   return Arena::CreateMessageInternal< ::operations::CellArray >(arena);

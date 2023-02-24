@@ -38,13 +38,13 @@ std::string Table::get_op_id() {
 }
 
 
-std::string* Table::get(ord row, ord col) {
+CellValue* Table::get(ord row, ord col) {
     coord coordinate = coord(row, col);
     return get(coordinate);
 }
 
 
-std::string* Table::get(coord coordinate) {
+CellValue* Table::get(coord coordinate) {
     return data[coordinate];
 }
 
@@ -54,12 +54,12 @@ region Table::get_region(op_id_t op_id) {
 }
 
 
-void Table::insert(coord coordinate, std::string* value) {
+void Table::insert(coord coordinate, CellValue* value) {
     data.insert({coordinate, value});
 }
 
 
-void Table::insert(ord row, ord col, std::string* value) {
+void Table::insert(ord row, ord col, CellValue* value) {
     data.insert({coord(row, col), value});
 }
 
@@ -91,7 +91,8 @@ void Table::print_contents() {
         // Now we can actually print stuff.
         for (auto col : *columns) {
             std::cout << "(" << row << ", " << col << "): ";
-            std::cout << *get(row, col) << std::endl;
+            get(row, col)->print_self();
+            std::cout << std::endl;
         }
 
         // Now that we've printed the row, no need to keep it in memory anymore.

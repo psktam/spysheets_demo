@@ -1,4 +1,26 @@
 # Stuff to Not Forget
+## February 24, 2023
+Got the `EngineAction` class to work with serializing the provided commands and
+encoding them using protobuf, and I was able to reconstruct the serialized data
+in python. Exciting stuff. The next step is to get them communicating over a 
+local TCP/IP socket, or some other means of IPC.
+
+The ideal setup here is for the `EngineAction` to just send its serialized
+contents to an abstract dispatcher that can be whatever we need it to be.
+
+The usages of `std::string` have also been replaced with a generic container
+called `CellValue` that can encapsulate integer, floating-point, or string 
+types. Jury is out for me, however, as to whether or not my strategy of 
+requiring all of the encapsulated data to already be allocated on the heap is a
+wise idea or not. The idea here is that `CellValue` should own the lifetime of 
+the data that it contains, so should it consume a reference, or should it just 
+copy the provided data wholesale? Maybe it's okay to copy it, but then that 
+means the class will need to carry extra empty fields for every new type that it
+can wrap... I think.
+
+Or maybe there's something that can be done here with templates that I just 
+don't know enough about.
+
 ## February 23, 2023
 Finally figured out how to get protobuf to be a dependency here. Went the route
 of installing `protobuf` as a system-level package using 

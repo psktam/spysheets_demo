@@ -3,10 +3,24 @@ syntax = "proto2";
 package operations;
 
 
+message CellValue {
+    enum CellType {
+        Integer = 1;
+        Real = 2;
+        String = 3;
+    }
+
+    optional CellType type = 1;
+    optional int64 int_val = 2;
+    optional double real_val = 3;
+    optional string string_val = 4;
+}
+
+
 message CellArray {
     optional int64 rows = 1;
     optional int64 cols = 2;
-    repeated string values = 3;
+    repeated CellValue values = 3;
 }
     
 message ActionSpecification {

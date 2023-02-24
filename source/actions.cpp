@@ -44,12 +44,27 @@ CellArray* EngineAction::run(arg_list_t* realized_inputs) {
         proto_arg_value->set_cols(arg_value->get_cols());
         
         // Now fill in the internal vector by iterating through each array 
-        // element one-by-one. Admittedly, this is rather inelegant.
+        // element one-by-one. Admittedly, this is rather inelegant. I'm 
+        // thinking that these elements should own their own serialization 
+        // methods, or they otherwise need to be extracted out of here.
 
         for (auto r = 0; r < arg_value->get_rows(); r++) {
             for (auto c = 0; c < arg_value->get_cols(); c++) {
                 auto proto_arg_value_pointer = proto_arg_value->add_values();
-                *proto_arg_value_pointer = arg_value->get(r, c);
+                CellValue* code_value = arg_value->get(r, c);
+
+                if (code_value->get_type() == CellType::Integer) {
+                    proto_arg_value_pointer->set_type(operations::CellValue_CellType_Integer);
+                    proto_arg_value_pointer->set_int_val(code_value->get_int());
+                }
+                else if (code_value->get_type() == CellType::Real) {
+                    proto_arg_value_pointer->set_type(operations::CellValue_CellType_Real);
+                    proto_arg_value_pointer->set_real_val(code_value->get_float());
+                }
+                else {
+                    proto_arg_value_pointer->set_type(operations::CellValue_CellType_String);
+                    proto_arg_value_pointer->set_string_val(code_value->get_string());
+                }
             }
         }
     }
