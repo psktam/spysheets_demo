@@ -5,58 +5,51 @@
 #include "actions.h"
 #include "cell_value.h"
 #include "cell_array.h"
+#include "coordinates.h"
 #include "table_types.h"
 #include "tables.h"
 
 
 int main(int argc, char* argv[]) {
-    Table table = Table();
-    std::cout << "Getting Op ID: " << table.get_op_id() << std::endl;
-    std::cout << "Getting Op ID: " << table.get_op_id() << std::endl;
+    // Okay, now we're starting to make and populate the table.
+    Table demo_table = Table();
+    CellArray direct_input_array = CellArray(5, 3);
+    direct_input_array.insert_at(0, 0, new CellValue(new std::string("Item")));
+    direct_input_array.insert_at(1, 0, new CellValue(new std::string("toothbrush")));
+    direct_input_array.insert_at(2, 0, new CellValue(new std::string("comb")));
+    direct_input_array.insert_at(3, 0, new CellValue(new std::string("mirror")));
+    direct_input_array.insert_at(4, 0, new CellValue(new std::string("toilet paper")));
+    direct_input_array.insert_at(0, 1, new CellValue(new std::string("Unit Price")));
 
-    table.insert(coord(1, 1), new CellValue(new std::string("This is at 1, 1")));
-    table.insert(coord(2, 1), new CellValue(new std::string("What is going on with your life?")));
-    table.insert(coord(2, 2), new CellValue(new std::string("I don't know man.")));
+    direct_input_array.insert_at(0, 1, new CellValue(new std::string("Unit Price")));
+    direct_input_array.insert_at(1, 1, new CellValue(new double(1.00)));
+    direct_input_array.insert_at(2, 1, new CellValue(new double(5.04)));
+    direct_input_array.insert_at(3, 1, new CellValue(new double(100000.30)));
+    direct_input_array.insert_at(4, 1, new CellValue(new double(1241241242134.0)));
 
-    table.print_contents();
+    direct_input_array.insert_at(0, 2, new CellValue(new std::string("Quantity")));
+    direct_input_array.insert_at(1, 2, new CellValue(new int64_t(1)));
+    direct_input_array.insert_at(2, 2, new CellValue(new int64_t(5)));
+    direct_input_array.insert_at(3, 2, new CellValue(new int64_t(10)));
+    direct_input_array.insert_at(4, 2, new CellValue(new int64_t(12)));
+    
+    auto action1 = DirectInputs(direct_input_array);
+    auto output_anchor_coordinate = DirectCoordinate(0, 0);
+    auto throwaway_inputs = new std::unordered_map<std::string, Selection>();
+    Operation op1 = Operation(
+        demo_table.get_op_id(),
+        throwaway_inputs,
+        action1,
+        std::tuple<Coordinate*, Corner>(&output_anchor_coordinate, Corner::upper_left)
+    );
 
-    CellArray arr = CellArray(10, 10);
-    arr.insert_at(0, 0, new CellValue(new std::string("Hi there!")));
-    arr.insert_at(9, 0, new CellValue(new std::string("Welcome to the last row!")));
-    arr.insert_at(9, 9, new CellValue(new std::string("Farewell from the last row!")));
+    cellmap* results = apply_operation(demo_table, op1);
 
-    CellArray arr2 = CellArray(arr);
+    for (auto [key, val] : *results) {
+        demo_table.insert(key, val);
+    }
 
-    std::cout << arr2.get(0, 0) << std::endl;
-    std::cout << arr2.get(9, 0) << std::endl;
-    std::cout << arr2.get(9, 9) << std::endl;
+    demo_table.print_contents();
 
-    // Let's make an action now and see if it will.. uh, work.
-    EngineAction action = EngineAction("return np.array(arg1).dot(arg2)");
-    arg_list_t* args = new arg_list_t({});
-
-    CellArray* arg1_val = new CellArray(5, 1);
-    arg1_val->insert_at(0, 0, new CellValue(new int64_t(1)));
-    arg1_val->insert_at(1, 0, new CellValue(new int64_t(2)));
-    arg1_val->insert_at(2, 0, new CellValue(new int64_t(3)));
-    arg1_val->insert_at(3, 0, new CellValue(new int64_t(4)));
-    arg1_val->insert_at(4, 0, new CellValue(new int64_t(5)));
-
-    std::cout << "Arg1 populated" << std::endl;
-
-    args->push_back(std::tuple<std::string, CellArray*>({"arg1", arg1_val}));
-
-    CellArray* arg2_val = new CellArray(5, 1);
-    arg2_val->insert_at(0, 0, new CellValue(new int64_t(10)));
-    arg2_val->insert_at(1, 0, new CellValue(new int64_t(20)));
-    arg2_val->insert_at(2, 0, new CellValue(new int64_t(50)));
-    arg2_val->insert_at(3, 0, new CellValue(new int64_t(30)));
-    arg2_val->insert_at(4, 0, new CellValue(new int64_t(50)));
-
-    args->push_back(std::tuple<std::string, CellArray*>({"arg2", arg2_val}));
-
-    std::cout << "Arg2 populated" << std::endl;
-
-    action.run(args);
     return 0;
 }

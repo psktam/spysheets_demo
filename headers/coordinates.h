@@ -4,13 +4,7 @@
 #include "tables.h"
 
 
-class Coordinate {
-    public:
-        virtual coord resolve(Table& table) = 0;
-};
-
-
-class DirectCoordinate : Coordinate {
+class DirectCoordinate : public Coordinate {
     private:
         ord row;
         ord col;
@@ -21,7 +15,7 @@ class DirectCoordinate : Coordinate {
 };
 
 
-class OpCorner : Coordinate {
+class OpCorner : public Coordinate {
     private:
         op_id_t op_id;
         Corner corner;
@@ -31,4 +25,14 @@ class OpCorner : Coordinate {
         coord resolve(Table& table);
 };
 
+
+class OffsetCoordinate : public Coordinate {
+    private:
+        Coordinate& internal_coordinate;
+        coord offset;
+
+    public:
+        OffsetCoordinate(Coordinate&, coord);
+        coord resolve(Table& table);
+};
 #endif  // COORDINATES_H

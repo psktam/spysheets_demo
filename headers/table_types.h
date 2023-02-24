@@ -33,4 +33,13 @@ struct coord_hasher{  // Wonder why we have to put this in a struct first.
 typedef std::unordered_map<coord, CellValue*, coord_hasher> cellmap;
 
 
+class Table;
+class Coordinate {
+    public:
+        virtual coord resolve(Table& table) = 0;
+};
+
+// Ordered as upper_left, lower_right
+typedef std::tuple<Coordinate*, Coordinate*> Selection;
+
 #endif  // TABLE_TYPES_H

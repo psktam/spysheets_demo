@@ -70,11 +70,12 @@ namespace operations {
 enum CellValue_CellType : int {
   CellValue_CellType_Integer = 1,
   CellValue_CellType_Real = 2,
-  CellValue_CellType_String = 3
+  CellValue_CellType_String = 3,
+  CellValue_CellType_Empty = 4
 };
 bool CellValue_CellType_IsValid(int value);
 constexpr CellValue_CellType CellValue_CellType_CellType_MIN = CellValue_CellType_Integer;
-constexpr CellValue_CellType CellValue_CellType_CellType_MAX = CellValue_CellType_String;
+constexpr CellValue_CellType CellValue_CellType_CellType_MAX = CellValue_CellType_Empty;
 constexpr int CellValue_CellType_CellType_ARRAYSIZE = CellValue_CellType_CellType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CellValue_CellType_descriptor();
@@ -225,6 +226,8 @@ class CellValue final :
     CellValue_CellType_Real;
   static constexpr CellType String =
     CellValue_CellType_String;
+  static constexpr CellType Empty =
+    CellValue_CellType_Empty;
   static inline bool CellType_IsValid(int value) {
     return CellValue_CellType_IsValid(value);
   }

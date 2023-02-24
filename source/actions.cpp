@@ -61,9 +61,12 @@ CellArray* EngineAction::run(arg_list_t* realized_inputs) {
                     proto_arg_value_pointer->set_type(operations::CellValue_CellType_Real);
                     proto_arg_value_pointer->set_real_val(code_value->get_float());
                 }
-                else {
+                else if (code_value->get_type() == CellType::String){
                     proto_arg_value_pointer->set_type(operations::CellValue_CellType_String);
                     proto_arg_value_pointer->set_string_val(code_value->get_string());
+                }
+                else if (code_value->is_empty()){
+                    proto_arg_value_pointer->set_type(operations::CellValue_CellType_Empty);
                 }
             }
         }

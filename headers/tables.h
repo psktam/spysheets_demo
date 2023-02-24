@@ -1,6 +1,7 @@
 #ifndef TABLES_H
 #define TABLES_H
 
+#include <cstdint>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -18,8 +19,21 @@ class Coordinate;
 
 struct Operation {
     op_id_t op_id;
+    std::unordered_map<std::string, Selection>* input_selections;
     Action& action;
-    Coordinate& output_anchor;
+    std::tuple<Coordinate*, Corner> output_anchor;
+
+    Operation(
+        op_id_t _op_id, 
+        std::unordered_map<std::string, Selection>* _input_selections,
+        Action& _action,
+        std::tuple<Coordinate*, Corner> _output_anchor
+        ): action(_action) {
+
+        op_id = _op_id;
+        input_selections = _input_selections;
+        output_anchor = _output_anchor;
+    }
 };
 
 
@@ -27,7 +41,8 @@ class Table {
     private:
         cellmap data;
         std::unordered_map<op_id_t, region> op_regions;
-        unsigned long long int cursor;
+        std::unordered_map<op_id_t, Operation*> op_map;
+        uint64_t cursor;
         std::vector<op_id_t> op_sequence;
 
     public:
@@ -48,6 +63,18 @@ class Table {
          * top to bottom.
         */
         void print_contents();
+
+        /**
+         * Operational functions that are used when we start modifying the 
+         * table's contents.
+        */
+        // void insert_operation_at_current_locatiton(Operation&);
+        // void advance_cursor_to_position(uint64_t);
+        // void rewind_cursor(uint64_t);
 };
+
+
+cellmap* apply_operation(Table&, Operation&);
+
 
 #endif  // TABLES_H

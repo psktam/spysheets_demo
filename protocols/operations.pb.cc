@@ -153,21 +153,21 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_protocols_2foperations_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\032protocols/operations.proto\022\noperations"
-  "\"\237\001\n\tCellValue\022,\n\004type\030\001 \001(\0162\036.operation"
+  "\"\252\001\n\tCellValue\022,\n\004type\030\001 \001(\0162\036.operation"
   "s.CellValue.CellType\022\017\n\007int_val\030\002 \001(\003\022\020\n"
-  "\010real_val\030\003 \001(\001\022\022\n\nstring_val\030\004 \001(\t\"-\n\010C"
+  "\010real_val\030\003 \001(\001\022\022\n\nstring_val\030\004 \001(\t\"8\n\010C"
   "ellType\022\013\n\007Integer\020\001\022\010\n\004Real\020\002\022\n\n\006String"
-  "\020\003\"N\n\tCellArray\022\014\n\004rows\030\001 \001(\003\022\014\n\004cols\030\002 "
-  "\001(\003\022%\n\006values\030\003 \003(\0132\025.operations.CellVal"
-  "ue\"\262\001\n\023ActionSpecification\022<\n\ninput_data"
-  "\030\001 \003(\0132(.operations.ActionSpecification."
-  "Argument\022\027\n\017script_contents\030\002 \001(\t\032D\n\010Arg"
-  "ument\022\014\n\004name\030\001 \001(\t\022*\n\013value_array\030\002 \001(\013"
-  "2\025.operations.CellArray"
+  "\020\003\022\t\n\005Empty\020\004\"N\n\tCellArray\022\014\n\004rows\030\001 \001(\003"
+  "\022\014\n\004cols\030\002 \001(\003\022%\n\006values\030\003 \003(\0132\025.operati"
+  "ons.CellValue\"\262\001\n\023ActionSpecification\022<\n"
+  "\ninput_data\030\001 \003(\0132(.operations.ActionSpe"
+  "cification.Argument\022\027\n\017script_contents\030\002"
+  " \001(\t\032D\n\010Argument\022\014\n\004name\030\001 \001(\t\022*\n\013value_"
+  "array\030\002 \001(\0132\025.operations.CellArray"
   ;
 static ::_pbi::once_flag descriptor_table_protocols_2foperations_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_protocols_2foperations_2eproto = {
-    false, false, 463, descriptor_table_protodef_protocols_2foperations_2eproto,
+    false, false, 474, descriptor_table_protodef_protocols_2foperations_2eproto,
     "protocols/operations.proto",
     &descriptor_table_protocols_2foperations_2eproto_once, nullptr, 0, 4,
     schemas, file_default_instances, TableStruct_protocols_2foperations_2eproto::offsets,
@@ -190,6 +190,7 @@ bool CellValue_CellType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;
@@ -200,6 +201,7 @@ bool CellValue_CellType_IsValid(int value) {
 constexpr CellValue_CellType CellValue::Integer;
 constexpr CellValue_CellType CellValue::Real;
 constexpr CellValue_CellType CellValue::String;
+constexpr CellValue_CellType CellValue::Empty;
 constexpr CellValue_CellType CellValue::CellType_MIN;
 constexpr CellValue_CellType CellValue::CellType_MAX;
 constexpr int CellValue::CellType_ARRAYSIZE;

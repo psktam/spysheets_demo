@@ -19,7 +19,7 @@ class Action {
 };
 
 
-class DirectInputs : Action {
+class DirectInputs : public Action {
     private:
         CellArray& values;
 
@@ -33,7 +33,7 @@ class DirectInputs : Action {
 // In python, this would be just serializing stuff as JSON, passing to python,
 // and getting the stuff back here. Pretty inefficient for large arrays, 
 // however.
-class EngineAction : Action {
+class EngineAction : public Action {
     private:
         std::string script_contents;
     public:

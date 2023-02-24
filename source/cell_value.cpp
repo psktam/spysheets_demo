@@ -2,6 +2,12 @@
 #include <stdexcept>
 #include "cell_value.h"
 
+
+CellValue::CellValue() {
+    type = CellType::Empty;
+}
+
+
 CellValue::CellValue(int64_t* input) {
     value = (void*) input;
     type = CellType::Integer;
@@ -19,6 +25,10 @@ CellValue::CellValue(std::string* input) {
 
 CellType CellValue::get_type() {
     return type;
+}
+
+bool CellValue::is_empty() {
+    return type == CellType::Empty;
 }
 
 int64_t CellValue::get_int() {
@@ -52,7 +62,7 @@ void CellValue::print_self() {
     else if (type == CellType::Real) {
         std::cout << get_float();
     }
-    else {
+    else if (type == CellType::String){
         std::cout << get_string();
     }
 }

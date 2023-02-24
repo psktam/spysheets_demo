@@ -8,6 +8,7 @@ message CellValue {
         Integer = 1;
         Real = 2;
         String = 3;
+        Empty = 4;
     }
 
     optional CellType type = 1;

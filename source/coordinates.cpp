@@ -43,3 +43,20 @@ coord OpCorner::resolve(Table& table) {
         return coord(last_row, last_col);
     }
 }
+
+
+/** 
+ * Definitions for offset coordinate.
+*/
+OffsetCoordinate::OffsetCoordinate(Coordinate& _internal_coordinate, coord _offset): 
+    internal_coordinate(_internal_coordinate) {
+    offset = _offset;
+}
+
+coord OffsetCoordinate::resolve(Table& table) {
+    coord base_coord = internal_coordinate.resolve(table);
+    return coord(
+        std::get<0>(base_coord) + std::get<0>(offset),
+        std::get<1>(base_coord) + std::get<1>(offset)
+    );
+}

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <tuple>
 #include <vector>
 #include "tables.h"
 
@@ -92,10 +93,116 @@ void Table::print_contents() {
         for (auto col : *columns) {
             std::cout << "(" << row << ", " << col << "): ";
             get(row, col)->print_self();
-            std::cout << std::endl;
         }
 
         // Now that we've printed the row, no need to keep it in memory anymore.
+        std::cout << std::endl;
         free(row_major[row]);
     }
+}
+
+// /**
+//  * Inserts the provided operation at the current cursor location.
+// */
+// void Table::insert_operation_at_current_locatiton(Operation& op) {
+//     op_sequence.insert(op_sequence.begin() + cursor, op.op_id);
+//     op_map[op.op_id] = &op;
+
+//     advance_cursor_to_position(cursor + 1);
+// }
+
+// /**
+//  * This function is ONLY for moving the cursor forward to the given position. 
+//  * Along the way, it applies every operation it passes.
+// */
+// void Table::advance_cursor_to_position(uint64_t new_position) {
+//     for (auto index = cursor; index < new_position; index++) {
+//         auto op_id = op_sequence[index];
+//         Operation* op = op_map[op_id];
+
+        
+//     }
+// }
+
+
+/** 
+ * Wrapper function for applying an operation in its entirety. It's essentially
+ * the pipeline function.
+*/
+cellmap* apply_operation(Table& table, Operation& op) {
+    arg_list_t realized_args = arg_list_t({});
+
+    for (auto [arg_name, arg_selection] : *op.input_selections) {
+        // Resolve the upper left and lower right corners.
+        coord upper_left = std::get<0>(arg_selection)->resolve(table);
+        coord lower_right = std::get<1>(arg_selection)->resolve(table);
+
+        // Some stuff to just unpack the coordinate tuples.
+        ord first_row, first_col, last_row, last_col;
+        std::tie(first_row, first_col) = upper_left;
+        std::tie(last_row, last_col) = lower_right;
+
+        // Create the CellArray for this input value.
+        CellArray* realized_inputs = new CellArray(
+            last_row - first_row + 1,
+            last_col - first_col + 1
+        );
+
+        // Now populate.
+        for (ord row = first_row; row <= last_row; row++) {
+            for (ord col = first_col; col <= last_col; col++) {
+                realized_inputs->insert_at(
+                    row - first_row,
+                    col - first_col,
+                    table.get(row, col)
+                );
+            }
+        }
+        realized_args.push_back({arg_name, realized_inputs});
+    }
+
+    CellArray* results = op.action.run(&realized_args);
+
+    // Finally, apply the offset as defined by the output anchor. The whole 
+    // point is that if the user specified they want the output to be anchored
+    // on its lower left corner, that means the lower left corner of the output
+    // will be positioned at the coordinate specified in output_anchor.
+    // This is so fucking ugly. I suck at C++.
+    coord base_anchor = std::get<0>(op.output_anchor)->resolve(table);
+    Corner anchor_corner = std::get<1>(op.output_anchor);
+    ord row_offset, col_offset;
+
+    if (anchor_corner == Corner::upper_left) {
+        row_offset = 0;
+        col_offset = 0;
+    }
+    else if (anchor_corner == Corner::upper_right) {
+        row_offset = 0;
+        col_offset = results->get_cols() - 1;
+    }
+    else if (anchor_corner == Corner::lower_left) {
+        row_offset = results->get_rows() - 1;
+        col_offset = 0;
+    }
+    else /* lower_right */ {
+        row_offset = results->get_rows() - 1;
+        col_offset = results->get_cols() - 1;
+    }
+
+    ord final_row_offset = std::get<0>(base_anchor) - row_offset;
+    ord final_col_offset = std::get<1>(base_anchor) - col_offset;
+
+    // Convert the results into a cellmap, and skip any entries that are empty.    
+    cellmap* results_as_map = new cellmap();
+    for (auto row = 0; row < results->get_rows(); row++) {
+        for (auto col = 0; col < results->get_cols(); col++) {
+            auto array_val = results->get(row, col);
+            if (!array_val->is_empty()) {
+                results_as_map->insert({coord(row + final_row_offset, col + final_col_offset), array_val});
+            }
+        }
+    }
+
+    free(results);
+    return results_as_map;
 }
