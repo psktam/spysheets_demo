@@ -57,6 +57,7 @@ class Table {
 
         void insert(coord, CellValue*);
         void insert(ord, ord, CellValue*);
+        void pop(ord, ord);
 
         /** 
          * Print the contents of the table, going from left to right and then
@@ -68,13 +69,13 @@ class Table {
          * Operational functions that are used when we start modifying the 
          * table's contents.
         */
-        // void insert_operation_at_current_locatiton(Operation&);
-        // void advance_cursor_to_position(uint64_t);
-        // void rewind_cursor(uint64_t);
+        void insert_operation_at_current_locatiton(Operation&);
+        void advance_cursor_to_position(uint64_t);
+        void rewind_cursor(uint64_t);
 };
 
 
-cellmap* apply_operation(Table&, Operation&);
+CellArray* apply_operation(Table&, Operation&, ord&, ord&);
 
 
 #endif  // TABLES_H

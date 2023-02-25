@@ -43,13 +43,16 @@ int main(int argc, char* argv[]) {
         std::tuple<Coordinate*, Corner>(&output_anchor_coordinate, Corner::upper_left)
     );
 
-    cellmap* results = apply_operation(demo_table, op1);
-
-    for (auto [key, val] : *results) {
-        demo_table.insert(key, val);
-    }
-
+    std::cout << "Inserting direct input" << std::endl;
+    demo_table.insert_operation_at_current_locatiton(op1);
     demo_table.print_contents();
 
+    std::cout << "Now rewinding to the beginning" << std::endl;
+    demo_table.rewind_cursor(0);
+    demo_table.print_contents();
+
+    std::cout << "Rolling back forward" << std::endl;
+    demo_table.advance_cursor_to_position(1);
+    demo_table.print_contents();
     return 0;
 }

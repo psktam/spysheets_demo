@@ -21,6 +21,10 @@ can wrap... I think.
 Or maybe there's something that can be done here with templates that I just 
 don't know enough about.
 
+At this point, I've gotten a minimal demo `DirectInput` going. There are raw 
+pointers all over the place which I imagine can be made a lot cleaner with 
+usages of C++'s smart pointers.
+
 ## February 23, 2023
 Finally figured out how to get protobuf to be a dependency here. Went the route
 of installing `protobuf` as a system-level package using 

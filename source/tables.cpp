@@ -65,6 +65,11 @@ void Table::insert(ord row, ord col, CellValue* value) {
 }
 
 
+void Table::pop(ord row, ord col) {
+    data.erase(coord(row, col));
+}
+
+
 void Table::print_contents() {
     std::unordered_map<ord, std::vector<ord>*> row_major;
     std::vector<ord> sorted_rows;
@@ -101,35 +106,82 @@ void Table::print_contents() {
     }
 }
 
-// /**
-//  * Inserts the provided operation at the current cursor location.
-// */
-// void Table::insert_operation_at_current_locatiton(Operation& op) {
-//     op_sequence.insert(op_sequence.begin() + cursor, op.op_id);
-//     op_map[op.op_id] = &op;
+/**
+ * Inserts the provided operation at the current cursor location.
+*/
+void Table::insert_operation_at_current_locatiton(Operation& op) {
+    op_sequence.insert(op_sequence.begin() + cursor, op.op_id);
+    op_map[op.op_id] = &op;
 
-//     advance_cursor_to_position(cursor + 1);
-// }
+    advance_cursor_to_position(cursor + 1);
+}
 
-// /**
-//  * This function is ONLY for moving the cursor forward to the given position. 
-//  * Along the way, it applies every operation it passes.
-// */
-// void Table::advance_cursor_to_position(uint64_t new_position) {
-//     for (auto index = cursor; index < new_position; index++) {
-//         auto op_id = op_sequence[index];
-//         Operation* op = op_map[op_id];
+/**
+ * This function is ONLY for moving the cursor forward to the given position. 
+ * Along the way, it applies every operation it passes.
+*/
+void Table::advance_cursor_to_position(uint64_t new_position) {
+    for (auto index = cursor; index < new_position; index++) {
+        auto op_id = op_sequence[index];
+        Operation* op = op_map[op_id];
+        ord row_offset, col_offset;
+        CellArray* outputs = apply_operation(*this, *op, row_offset, col_offset);
 
+        for (ord row = 0; row < outputs->get_rows(); row++) {
+            for (ord col = 0; col < outputs->get_cols(); col++) {
+                auto output_val = outputs->get(row, col);
+                if (!output_val->is_empty()) {
+                    insert(row + row_offset, col + col_offset, output_val);
+                }
+            }
+        }
+
+        op_regions[op_id] = region(
+            coord(row_offset, col_offset),
+            coord(row_offset + outputs->get_rows(), col_offset + outputs->get_cols())
+        );
+    }
+
+    cursor = new_position;
+}
+
+/**
+ * This function is ONLY for moving the cursor to a previous position. Doing
+ * this will almost always remove data from the table.
+*/
+void Table::rewind_cursor(uint64_t new_position) {
+    for (auto index = cursor - 1; index >= new_position; index--) {
+        auto op_id = op_sequence[index];
+        region area = op_regions[op_id];
+
+        coord upper_left, lower_right;
+        std::tie(upper_left, lower_right) = area;
+        ord first_row, first_col, last_row, last_col;
+        std::tie(first_row, first_col) = upper_left;
+        std::tie(last_row, last_col) = lower_right;
+
+        for (auto row = first_row; row <= last_row; row++) {
+            for (auto col = first_col; col <= last_col; col++) {
+                CellValue* current_value = get(row, col);
+                pop(row, col);
+            }
+        }
+
+        op_regions.erase(op_id);
         
-//     }
-// }
+        if (index == 0) {
+            break;  // Underflow issues  otherwise.
+        }
+    }
+    cursor = new_position;
+}
 
 
 /** 
  * Wrapper function for applying an operation in its entirety. It's essentially
  * the pipeline function.
 */
-cellmap* apply_operation(Table& table, Operation& op) {
+CellArray* apply_operation(Table& table, Operation& op, ord& final_row_offset, ord& final_col_offset) {
     arg_list_t realized_args = arg_list_t({});
 
     for (auto [arg_name, arg_selection] : *op.input_selections) {
@@ -189,20 +241,8 @@ cellmap* apply_operation(Table& table, Operation& op) {
         col_offset = results->get_cols() - 1;
     }
 
-    ord final_row_offset = std::get<0>(base_anchor) - row_offset;
-    ord final_col_offset = std::get<1>(base_anchor) - col_offset;
+    final_row_offset = std::get<0>(base_anchor) - row_offset;
+    final_col_offset = std::get<1>(base_anchor) - col_offset;
 
-    // Convert the results into a cellmap, and skip any entries that are empty.    
-    cellmap* results_as_map = new cellmap();
-    for (auto row = 0; row < results->get_rows(); row++) {
-        for (auto col = 0; col < results->get_cols(); col++) {
-            auto array_val = results->get(row, col);
-            if (!array_val->is_empty()) {
-                results_as_map->insert({coord(row + final_row_offset, col + final_col_offset), array_val});
-            }
-        }
-    }
-
-    free(results);
-    return results_as_map;
+    return results;
 }
