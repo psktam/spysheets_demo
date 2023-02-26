@@ -28,11 +28,11 @@ class OpCorner : public Coordinate {
 
 class OffsetCoordinate : public Coordinate {
     private:
-        Coordinate& internal_coordinate;
+        std::unique_ptr<Coordinate> internal_coordinate;
         coord offset;
 
     public:
-        OffsetCoordinate(Coordinate&, coord);
+        OffsetCoordinate(Coordinate*, coord);
         coord resolve(Table& table);
 };
 #endif  // COORDINATES_H

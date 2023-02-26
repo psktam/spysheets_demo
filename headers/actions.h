@@ -4,6 +4,7 @@
 #include <tuple>
 #include <vector>
 #include "cell_array.h"
+#include "engine_client.h"
 #include "table_types.h"
 
 // The arguments into an action are internally represented as a list of 
@@ -38,9 +39,12 @@ class DirectInputs : public Action {
 // with protobuf and opening up a TCP/IP connection.
 class EngineAction : public Action {
     private:
+        // This can probably be abstracted to any interface with a "send" function
+        // but this is what I want to get up and running quickly.
+        engine_client::EngineClient& client;
         std::string script_contents;
     public:
-        EngineAction(std::string);
+        EngineAction(engine_client::EngineClient&, std::string);
         CellArray<CellValue> run(const arg_list_t&);
 };
 

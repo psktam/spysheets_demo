@@ -1,0 +1,2 @@
+numpy
+protobuf=4.22.0

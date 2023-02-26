@@ -21,7 +21,9 @@ CellArray<CellValue> DirectInputs::run(const arg_list_t& realized_inputs) {
 /** 
  * Definitions for Engine-based actions.
 */
-EngineAction::EngineAction(std::string _script_contents) {
+EngineAction::EngineAction(
+    engine_client::EngineClient& _client, 
+    std::string _script_contents) : client(_client) {
     script_contents = _script_contents;
 }
 
@@ -78,7 +80,8 @@ CellArray<CellValue> EngineAction::run(const arg_list_t& realized_inputs) {
     if (!action.SerializeToOstream(&output)) {
       std::cerr << "Failed to write to disk." << std::endl;
     }
-    action.SerializeToOstream(&std::cout);
+
+    client.send_data(action.SerializeAsString());
 
     return CellArray<CellValue>(0, 0);
 }

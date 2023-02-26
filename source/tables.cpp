@@ -137,7 +137,7 @@ void Table::advance_cursor_to_position(uint64_t new_position) {
 
         op_regions[op_id] = region(
             coord(row_offset, col_offset),
-            coord(row_offset + outputs.get_rows(), col_offset + outputs.get_cols())
+            coord(row_offset + outputs.get_rows() - 1, col_offset + outputs.get_cols() - 1)
         );
     }
 
