@@ -2,6 +2,7 @@
 #define TABLES_H
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -17,26 +18,48 @@ typedef std::tuple<coord, coord> region;
 class Coordinate;
 
 
+class Argument{
+    public:
+        std::string name;
+        std::shared_ptr<Coordinate> upper_left;
+        std::shared_ptr<Coordinate> lower_right;
+
+        Argument(std::string _name, Coordinate* _upper_left, Coordinate* _lower_right) {
+            name = _name;
+            upper_left = std::shared_ptr<Coordinate>(_upper_left);
+            lower_right = std::shared_ptr<Coordinate>(_lower_right);
+        };
+};
+
+typedef std::unordered_map<coord, CellValue, coord_hasher> cellmap;
+
+
 struct Operation {
     op_id_t op_id;
-    std::unordered_map<std::string, Selection>* input_selections;
-    Action& action;
-    std::tuple<Coordinate*, Corner> output_anchor;
+    std::vector<Argument> input_selections;
+    std::unique_ptr<Action> action;
+    std::unique_ptr<Coordinate> output_anchor_coordinate;
+    Corner output_anchor_corner;
 
-    Operation(
-        op_id_t _op_id, 
-        std::unordered_map<std::string, Selection>* _input_selections,
-        Action& _action,
-        std::tuple<Coordinate*, Corner> _output_anchor
-        ): action(_action) {
-
+    Operation( 
+        op_id_t _op_id,
+        std::vector<Argument> _input_selections,
+        Action* _action,
+        Coordinate* _output_anchor_coordinate,
+        Corner _output_anchor_corner
+    ) {
         op_id = _op_id;
         input_selections = _input_selections;
-        output_anchor = _output_anchor;
+        action = std::unique_ptr<Action>(_action);
+        output_anchor_coordinate = std::unique_ptr<Coordinate>(_output_anchor_coordinate);
+        output_anchor_corner = _output_anchor_corner;
     }
 };
 
 
+// Last hurdle here is to get rid of the raw Operation* pointer, but that can
+// probably be done with unique_ptr. I think it makes sense for table to own
+// operation.
 class Table {
     private:
         cellmap data;
@@ -50,13 +73,13 @@ class Table {
 
         std::string get_op_id();
 
-        CellValue* get(ord, ord);
-        CellValue* get(coord);
+        CellValue get(ord, ord);
+        CellValue get(coord);
 
         region get_region(op_id_t);
 
-        void insert(coord, CellValue*);
-        void insert(ord, ord, CellValue*);
+        void insert(coord, CellValue);
+        void insert(ord, ord, CellValue);
         void pop(ord, ord);
 
         /** 
@@ -75,7 +98,7 @@ class Table {
 };
 
 
-CellArray* apply_operation(Table&, Operation&, ord&, ord&);
+CellArray<CellValue> run_operation(Table&, Operation&, ord&, ord&);
 
 
 #endif  // TABLES_H

@@ -5,23 +5,49 @@
 #include "cell_value.h"
 #include "table_types.h"
 
-
+template <class T>
 class CellArray {
     private:
         ord rows;
         ord cols;
-        std::vector<CellValue*> contents;
+        std::vector<T> contents;
 
     public:
-        CellArray(ord _rows, ord _cols);
-        void insert_at(ord, ord, CellValue*);
-        void insert_at(coord, CellValue*);
+        CellArray(ord _rows, ord _cols) {
+            rows = _rows;
+            cols = _cols;
+            contents = std::vector<T>(rows * cols);
+        };
 
-        CellValue* get(ord, ord);
-        CellValue* get(coord);
+        void insert_at(ord row, ord col, const T value) {
+            ord index = (cols * row) + col;
+            contents[index] = value;
+        };
 
-        ord get_rows();
-        ord get_cols();
+        void insert_at(coord coordinate, const T value) {
+            ord row, col;
+            std::tie(row, col) = coordinate;
+
+            insert_at(row, col, value);
+        };
+
+        const T get(ord row, ord col) const {
+            ord index = (row * cols) + col;
+            return contents[index];
+        };
+
+        const T get(coord coordinate) const {
+            ord row, col;
+            std::tie(row, col) = coordinate;
+            return get(row, col);
+        };
+
+        ord get_rows() const {
+            return rows;
+        };
+        ord get_cols() const {
+            return cols;
+        };
 };
 
 #endif  // CELL_ARRAY_H

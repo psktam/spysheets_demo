@@ -10,35 +10,38 @@
 // 2-element tuples, where the first element is the name of the argument, and 
 // the second element is the array-like object that represents the actual values
 // being provided as the argument.
-typedef std::vector<std::tuple<std::string, CellArray*>> arg_list_t;
+typedef std::vector<std::tuple<std::string, CellArray<CellValue>>> arg_list_t;
 
 
 class Action {
     public:
-        virtual CellArray* run(arg_list_t*) = 0;
+        /**
+         * Since we only expect the Table class to use the results of actions,
+         * I'm going to roll the dice and just return raw stuff. The Table 
+         * should wrap all of these usages in unique_ptr.
+        */
+        virtual CellArray<CellValue> run(const arg_list_t&) = 0;
 };
 
 
 class DirectInputs : public Action {
     private:
-        CellArray& values;
+        CellArray<CellValue> values;
 
     public:
-        DirectInputs(CellArray&);
-        CellArray* run(arg_list_t*);
+        DirectInputs(CellArray<CellValue>);
+        CellArray<CellValue> run(const arg_list_t&);
 };
 
 // Other types of actions basically involve passing the data to the 
-// python kernel and bringing the data back here. 
-// In python, this would be just serializing stuff as JSON, passing to python,
-// and getting the stuff back here. Pretty inefficient for large arrays, 
-// however.
+// python kernel and bringing the data back here. We're going to try doing this 
+// with protobuf and opening up a TCP/IP connection.
 class EngineAction : public Action {
     private:
         std::string script_contents;
     public:
         EngineAction(std::string);
-        CellArray* run(arg_list_t*);
+        CellArray<CellValue> run(const arg_list_t&);
 };
 
 

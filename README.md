@@ -1,4 +1,33 @@
 # Stuff to Not Forget
+## February 25, 2023
+Went down a deep rabbit warren learning about C++'s smart pointers, copy 
+construction, and started touching a bit on move semantics. My head hurts, but I
+think this was worth the time that I spent learning all of the mechanics that I
+could about the myriad tricks that have been cooked up to make C++'s memory
+management and SAFETY more tractable. Needless to say I am rather shocked at the
+number of ways you can shoot yourself in the foot with this stuff.
+
+Ultimately, I focused my efforts on learning how C++ deals with the fact that 
+the container classes all allocate their entries on the heap, but that it can be
+done WITHOUT needing to manually call `new` for every new key and such. Because
+of that, I don't have to worry about freeing the `coord` tuples I create as keys
+for the internal dictionary that the `Table` class encapsulates.
+
+Along a similar vein, I began working on making sure that the `CellValue` class
+was fully copy-constructible. That led me to learning about the "Big 3" about
+C++ programming for classes; to override the constructor, destructor, and 
+copy-assignment operators. 
+
+I had originally implemented the copy-constructor and the destructor, but I 
+hadn't implemented the copy-assignment operator because in my head, that's just
+something I never have to think about when working with Python. That was leading
+to strange bugs where whenever I assigned `CellValue` to another `CellValue` 
+instance, the data would somehow get lost. But once the `=` operator was 
+implemented, it worked the way that it needed to again.
+
+Next step: adding the socket for the engine. All in all, this was painful, but
+I'm glad I went through this exercise _now_.
+
 ## February 24, 2023
 Got the `EngineAction` class to work with serializing the provided commands and
 encoding them using protobuf, and I was able to reconstruct the serialized data
