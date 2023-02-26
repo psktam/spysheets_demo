@@ -69,11 +69,6 @@ void Table::insert(ord row, ord col, CellValue value) {
 }
 
 
-void Table::pop(ord row, ord col) {
-    data.erase(coord(row, col));
-}
-
-
 void Table::print_contents() {
     std::unordered_map<ord, std::vector<ord>*> row_major;
     std::vector<ord> sorted_rows;
@@ -113,9 +108,9 @@ void Table::print_contents() {
 /**
  * Inserts the provided operation at the current cursor location.
 */
-void Table::insert_operation_at_current_locatiton(Operation& op) {
-    op_sequence.insert(op_sequence.begin() + cursor, op.op_id);
-    op_map[op.op_id] = &op;
+void Table::insert_operation_at_current_locatiton(Operation* op) {
+    op_sequence.insert(op_sequence.begin() + cursor, op->op_id);
+    op_map[op->op_id] = std::move(std::unique_ptr<Operation>(op));
 
     advance_cursor_to_position(cursor + 1);
 }
@@ -127,7 +122,7 @@ void Table::insert_operation_at_current_locatiton(Operation& op) {
 void Table::advance_cursor_to_position(uint64_t new_position) {
     for (auto index = cursor; index < new_position; index++) {
         auto op_id = op_sequence[index];
-        Operation* op = op_map[op_id];
+        const std::unique_ptr<Operation>& op = op_map[op_id];
         ord row_offset, col_offset;
         CellArray<CellValue> outputs = run_operation(*this, *op, row_offset, col_offset);
 
@@ -166,15 +161,14 @@ void Table::rewind_cursor(uint64_t new_position) {
 
         for (auto row = first_row; row <= last_row; row++) {
             for (auto col = first_col; col <= last_col; col++) {
-                CellValue current_value = get(row, col);
-                pop(row, col);
+                data.erase(coord(row, col));
             }
         }
 
         op_regions.erase(op_id);
         
         if (index == 0) {
-            break;  // Underflow issues  otherwise.
+            break;  // Underflow issues otherwise.
         }
     }
     cursor = new_position;

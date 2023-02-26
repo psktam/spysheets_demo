@@ -57,14 +57,11 @@ struct Operation {
 };
 
 
-// Last hurdle here is to get rid of the raw Operation* pointer, but that can
-// probably be done with unique_ptr. I think it makes sense for table to own
-// operation.
 class Table {
     private:
         cellmap data;
         std::unordered_map<op_id_t, region> op_regions;
-        std::unordered_map<op_id_t, Operation*> op_map;
+        std::unordered_map<op_id_t, std::unique_ptr<Operation>> op_map;
         uint64_t cursor;
         std::vector<op_id_t> op_sequence;
 
@@ -80,7 +77,6 @@ class Table {
 
         void insert(coord, CellValue);
         void insert(ord, ord, CellValue);
-        void pop(ord, ord);
 
         /** 
          * Print the contents of the table, going from left to right and then
@@ -92,7 +88,7 @@ class Table {
          * Operational functions that are used when we start modifying the 
          * table's contents.
         */
-        void insert_operation_at_current_locatiton(Operation&);
+        void insert_operation_at_current_locatiton(Operation*);
         void advance_cursor_to_position(uint64_t);
         void rewind_cursor(uint64_t);
 };

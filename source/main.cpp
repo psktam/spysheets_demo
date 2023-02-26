@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 
     auto throwaway_inputs = std::vector<Argument>({});
 
-    Operation op1 = Operation(
+    Operation* op1 = new Operation(
         demo_table.get_op_id(),
         throwaway_inputs,
         new DirectInputs(direct_input_array),
